@@ -1,19 +1,20 @@
+const fs = require('fs');
 const http = require('http');
-const url = require('url');
+
+const data = fs.readFileSync(`${__dirname}/dev-data/data.json`);
 
 const server = http.createServer((req, res) => {
-    const pathName = req.url;
-    if(pathName === '/overview' || pathName === '/') {
-        res.writeHead(404, {
+    if(req.url === '/' || req.url === '/overview') {
+        res.writeHead(200, {
             'content-type': 'text/html',
-        });
-        res.end('<h2>Welcome to overview</h2>');
-    } else {
-        res.writeHead(404, {
-            'content-type': 'text/html'
-        });
-        res.end('<h4>Page not found</h4>');
+        })
+        res.end('<h3>Welcome to overview</h3>');
+    } else if (req.url === '/api') {
+        res.writeHead(200, {
+            'content-type': 'application/json',
+        })
+        res.end(data);
     }
 });
 
-server.listen(3000, '127.0.0.1', () => console.log('Up and running'));
+server.listen(3000, '127.0.0.1', () => console.log('it works'));
