@@ -28,7 +28,7 @@ const replaceTemplate = (temp, product) => {
 const server = http.createServer((req, res) => {
     console.log(req.url);
     const { query, pathname } = url.parse(req.url, true);
-    console.log('QUERY', query.id);
+    console.log('pathname', pathname);
     if(pathname === '/' || req.url === '/overview') {
         res.writeHead(200, {
             'content-type': 'text/html',
@@ -47,10 +47,12 @@ const server = http.createServer((req, res) => {
             'content-type': 'text/html'
         })
     } else if (pathname === '/product') {
+        const product = dataObj[query.id];
+        const output = replaceTemplate(tempProduct, product);
         res.writeHead(200, {
             'content-type': 'text/html',
         })
-        res.end('<h4>Welcome to product page</h4>')
+        res.end(output)
     } else {
         res.writeHead(200, {
             'content-type': 'text/html'
